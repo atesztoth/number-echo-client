@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import logo from './logo.svg';
 import './App.css';
 import axios from 'axios';
+const host = 'https://number-echo-server.herokuapp.com/translate/';
 
 class App extends Component {
   constructor() {
@@ -14,7 +15,7 @@ class App extends Component {
 
   buttonClicked = async () => {
     try {
-      const { data: { result } } = await axios.get('http://localhost:10010/translate/' + this.state.inputValue);
+      const { data: { result } } = await axios.get(host + this.state.inputValue);
       this.setState({ number: result });
     } catch (e) {
       const { request: { response } } = e;
