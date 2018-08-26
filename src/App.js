@@ -5,20 +5,8 @@ import axios from 'axios';
 
 const host = 'https://number-echo-server.herokuapp.com/translate/';
 
-/**
- * todo: Implement :: WIP!
- */
-class CustomButton extends Component {
-  constructor() {
-    super();
-    this.state.isClickable = false;
-  }
-
-  render() {
-    return (
-      <button disabled={this.state.isClickable}>Translate!</button>
-    )
-  }
+function CustomButton(props) {
+  return (<button disabled={!props.isClickable} onClick={props.onClick}>Translate!</button>);
 }
 
 class App extends Component {
@@ -26,11 +14,12 @@ class App extends Component {
     super();
     this.state = { number: null, inputValue: '' };
 
-    this.buttonClicked = this.buttonClicked.bind(this);
     this.updateNumberInputValue = this.updateNumberInputValue.bind(this);
   }
 
-  buttonClicked = async () => {
+  handleClick = async () => {
+    if (!Number.isInteger(Number(this.state.inputValue))) return alert('I was not given a number.');
+
     try {
       const { data: { result } } = await axios.get(host + this.state.inputValue);
       this.setState({ number: result });
@@ -43,10 +32,6 @@ class App extends Component {
 
   updateNumberInputValue(evt) {
     this.setState({ inputValue: evt.target.value });
-  }
-
-  renderButton(isDisabled) {
-    return <CustomButton isDisabled={isDisabled || true}/>
   }
 
   render() {
@@ -64,7 +49,7 @@ class App extends Component {
           <div>
             <span>{this.state.number || 'Give me a number'}</span>
           </div>
-          <button onClick={this.buttonClicked}>Translate!</button>
+          <CustomButton isClickable={this.state.inputValue !== ''} onClick={() => this.handleClick()}/>
         </div>
       </div>
     );
