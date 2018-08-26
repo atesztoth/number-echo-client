@@ -2,7 +2,24 @@ import React, {Component} from 'react';
 import logo from './logo.svg';
 import './App.css';
 import axios from 'axios';
+
 const host = 'https://number-echo-server.herokuapp.com/translate/';
+
+/**
+ * todo: Implement :: WIP!
+ */
+class CustomButton extends Component {
+  constructor() {
+    super();
+    this.state.isClickable = false;
+  }
+
+  render() {
+    return (
+      <button disabled={this.state.isClickable}>Translate!</button>
+    )
+  }
+}
 
 class App extends Component {
   constructor() {
@@ -26,6 +43,10 @@ class App extends Component {
 
   updateNumberInputValue(evt) {
     this.setState({ inputValue: evt.target.value });
+  }
+
+  renderButton(isDisabled) {
+    return <CustomButton isDisabled={isDisabled || true}/>
   }
 
   render() {
