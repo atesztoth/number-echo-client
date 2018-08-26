@@ -2,18 +2,24 @@ import React, {Component} from 'react';
 import logo from './logo.svg';
 import './App.css';
 import axios from 'axios';
+
 const host = 'https://number-echo-server.herokuapp.com/translate/';
+
+function CustomButton(props) {
+  return (<button disabled={!props.isClickable} onClick={props.onClick}>Translate!</button>);
+}
 
 class App extends Component {
   constructor() {
     super();
     this.state = { number: null, inputValue: '' };
 
-    this.buttonClicked = this.buttonClicked.bind(this);
     this.updateNumberInputValue = this.updateNumberInputValue.bind(this);
   }
 
-  buttonClicked = async () => {
+  handleClick = async () => {
+    if (!Number.isInteger(Number(this.state.inputValue))) return alert('I was not given a number.');
+
     try {
       const { data: { result } } = await axios.get(host + this.state.inputValue);
       this.setState({ number: result });
@@ -43,7 +49,7 @@ class App extends Component {
           <div>
             <span>{this.state.number || 'Give me a number'}</span>
           </div>
-          <button onClick={this.buttonClicked}>Translate!</button>
+          <CustomButton isClickable={this.state.inputValue !== ''} onClick={() => this.handleClick()}/>
         </div>
       </div>
     );
