@@ -25,7 +25,12 @@ class App extends Component {
       this.setState({ number: result });
     } catch (e) {
       const { request: { response } } = e;
-      const parsedResponse = JSON.parse(response);
+      let parsedResponse = { message: ':O' }
+      try {
+        parsedResponse = JSON.parse(response);
+      } catch (e) {
+        console.error('Error while parsing json:', response)
+      }
       return this.setState({ number: parsedResponse.message });
     }
   };
